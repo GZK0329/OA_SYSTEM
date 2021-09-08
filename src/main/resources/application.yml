@@ -1,0 +1,91 @@
+#
+server:
+  tomcat:
+    accesslog:
+      directory: logs
+      enabled: true
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 30
+    connection-timeout: 5000ms
+  port: 8080
+  servlet:
+    context-path: /emos-wx-api
+
+#MySQL
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/emos?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: gzk1996329
+      initial-size: 6
+      max-active: 12
+      min-idle: 6
+      max-wait: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 1000
+        max-wait: -1ms
+        max-idle: 16
+        min-idle: 8
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: emos
+      authentication-database: admin
+      username: root
+      password: gzk1996329
+  mail:
+    default-encoding: utf-8
+    host: smtp.163.com
+    username: lpmpzq369@163.com
+    password: FDEGNYLOQCORXQEA
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.example.emos.wx.db.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    root: info
+    com.example.emos.wx.db.dao: warn
+  pattern:
+    console: "%d{HH:mm:ss}  %-5level  %msg%n"
+
+emos:
+  jwt:
+    secret: gzk123456
+    expire: 5
+    cache-expire: 10
+  face:
+    createFaceModelUrl: http://106.14.104.198:3000/create_face_model
+    checkinUrl: http://106.14.104.198:3000/checkin
+  email:
+    system: lpmpzq369@163.com
+    hr: 470590124@qq.com
+  image-folder: D:/emos-images
+  code: 930B90EDC18E3E71
+wx:
+  app-id: wxf51c1b252f5d455a
+  app-secret: a20c7dad1106b0fdd047c5fa02b5ebac
+
+
+

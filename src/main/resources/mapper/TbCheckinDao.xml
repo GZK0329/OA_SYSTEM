@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.emos.wx.db.dao.TbCheckinDao">
+    <select id="haveCheckin" parameterType="HashMap" resultType="Integer">
+        SELECT id
+        FROM tb_checkin
+        WHERE user_id = #{userId}
+          AND date = CURRENT_DATE
+          AND create_time BETWEEN #{start}
+          AND #{end}
+            LIMIT 1;
+    </select>
+
+    <insert id="insertCheckin" parameterType="com.example.emos.wx.db.pojo.TbCheckin">
+        INSERT INTO tb_checkin
+        SET user_id = #{userId},
+        <if test="address != null">
+            address = #{address},
+        </if>
+        <if test="country != null">
+            country = #{country},
+        </if>
+        <if test="province != null">
+            province = #{province},
+        </if>
+        <if test="city != null">
+            city = #{city},
+        </if>
+        <if test="district != null">
+            district = #{district},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="risk != null">
+            risk = #{risk},
+        </if>
+        date = #{date},
+        create_time = #{createTime}
+    </insert>
+
+    <select id="searchTodayCheckin" parameterType="int" resultType="HashMap">
+        SELECT u.name,
+               u.photo,
+               d.dept_name                          AS deptName,
+               ck.address,
+               CASE
+                   WHEN ck.status = 1 THEN '正常'
+                   WHEN ck.status = 2 THEN '迟到'
+                   WHEN ck.status = 3 THEN '缺勤'
+                   END                              AS status,
+               CASE
+                   WHEN ck.risk = 1 THEN '低风险'
+                   WHEN ck.risk = 2 THEN '中风险'
+                   WHEN ck.risk = 3 THEN '高风险'
+                   END                              AS risk,
+               DATE_FORMAT(ck.create_time, '%H:%i') AS checkinTime,
+               ck.date
+        FROM tb_user AS u
+                 LEFT JOIN tb_dept AS d ON u.dept_id = d.id
+                 LEFT JOIN tb_checkin AS ck ON ck.user_id = u.id AND ck.date = CURRENT_DATE
+        WHERE u.id = #{userId}
+          AND u.status = 1
+    </select>
+
+    <select id="searchCheckinDays" parameterType="int" resultType="long">
+        SELECT count(*) AS count
+        FROM tb_checkin
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="searchWeekCheckin" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            CAST(date AS CHAR) AS date,
+			CASE status
+				when'1' then '正常'
+				when'2' then '迟到'
+				when'3' then '缺勤'
+            end AS status
+        FROM tb_checkin
+        WHERE user_id=#{userId} AND date BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+
+</mapper>
