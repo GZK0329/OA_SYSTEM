@@ -15,7 +15,6 @@ import java.util.Collections;
  */
 @Configuration
 public class RabbitMQConfig {
-
     @Bean
     public ConnectionFactory getFactory(){
         ConnectionFactory factory = new ConnectionFactory();
@@ -23,5 +22,4 @@ public class RabbitMQConfig {
         factory.setPort(5672);
         return factory;
     }
-
 }

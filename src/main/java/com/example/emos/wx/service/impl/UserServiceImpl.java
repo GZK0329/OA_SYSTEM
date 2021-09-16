@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService {
                 entity.setMsg("欢迎您注册成为超级管理员，请及时更新你的员工个人信息。");
                 entity.setSendTime(new Date());
                 messageTask.sendAsync(id + "", entity);
-
                 return id;
             } else {
                 throw new EmosException("已经有超级管理员，绑定错误！");
