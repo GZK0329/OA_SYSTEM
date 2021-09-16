@@ -54,8 +54,6 @@ public class UserController {
         return R.ok("注册成功").put("token", token).put("permissions", permissions);
     }
 
-
-
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public R login(@Valid @RequestBody LoginForm form){

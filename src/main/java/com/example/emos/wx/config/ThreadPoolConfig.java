@@ -18,7 +18,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @Scope("prototype")
 public class ThreadPoolConfig {
-
     @Bean("AsyncTaskExecutor")
     public AsyncTaskExecutor taskExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
